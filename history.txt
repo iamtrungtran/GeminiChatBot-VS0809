@@ -1,0 +1,4 @@
+I'm Gemini Chat Bot, Can i help you? 
+You: Xin chào
+Gemini: Xin chào! Rất vui được gặp bạn. Tôi có thể giúp gì cho bạn ngày hôm nay?
+

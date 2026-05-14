@@ -1,7 +1,10 @@
 from google import genai
+from dotenv import load_dotenv
 import speech_recognition as sr
+import os
 
-client = genai.Client(api_key="AIzaSyCxs4_Qv7ws5v2bwxHLXtWwxpucHOF48yc")
+load_dotenv()
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 def AI_response(input_text):
     try:
         response = client.models.generate_content(
