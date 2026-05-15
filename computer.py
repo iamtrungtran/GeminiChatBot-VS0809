@@ -3,18 +3,26 @@ from dotenv import load_dotenv
 import speech_recognition as sr
 import os
 
+#Load API from .env
 load_dotenv()
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-def AI_response(input_text):
+
+#Create chat session
+chat_session = client.chats.create(model="gemini-3-flash-preview")
+
+def AI_response_stream(input_text, queue):
     try:
-        response = client.models.generate_content(
-            model="gemini-3-flash-preview",
-            contents= input_text
-        )
+        response = chat_session.send_message_stream(input_text)
+        for chunk in response:
+            queue.put(chunk.text)
+        queue.put(None)
     except:
-        return "An error occured. Please try again later."
-    else:
-        return response.text
+        queue.put("An error occured. Please try again later.")
+        queue.put(None)
+
+def reset_chat():
+    global chat_session
+    chat_session = client.chats.create(model="gemini-3-flash-preview")
 
 def listen():
     r = sr.Recognizer()
